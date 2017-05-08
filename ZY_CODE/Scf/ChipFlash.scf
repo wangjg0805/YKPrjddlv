@@ -1,0 +1,73 @@
+;/****************************************Copyright (c) **************************************************
+;**                         Guangzhou ZHIYUAN electronics Co.,LTD.                               
+;**                                     
+;**                               http://www.embedtools.com
+;**
+;**--------------File Info-------------------------------------------------------------------------------
+;** File Name:           ChipFlash.scf
+;** Last modified Date:  2008-01-15
+;** Last Version:        1.1
+;** Descriptions:        Scatter File
+;**
+;**------------------------------------------------------------------------------------------------------
+;** Created By:         Chenmingji
+;** Created date:       2004-09-17
+;** Version:            1.0
+;** Descriptions:       First version
+;**
+;**------------------------------------------------------------------------------------------------------
+;** Modified by:        LinEnqiang
+;** Modified date:      2008-05-08
+;** Version:            V1.1
+;** Descriptions:
+;**
+;********************************************************************************************************/
+
+ROM_LOAD 0x00000000                                                     ;/*  内部Flash调试              */
+{
+    ROM_EXEC 0x00000000
+    {
+        Startup.o (vectors, +First)
+        * (+RO)
+    }
+
+    IRAM 0x40000000                                                     
+    {
+        Startup.o (MyStacks)
+        
+    }
+
+    STACKS_BOTTOM +0 UNINIT
+    {
+        Startup.o (StackBottom)
+    }
+
+    STACKS 0x40010000 UNINIT                                            ;/*  根据内部RAM实际大小更改    */
+    {
+        Startup.o (StacksTop)
+    }
+    
+   ;  ERAM1 0xA1E00000                                                     ;/*  外扩SDRAM默认在BANKA       */
+   ; {
+   ;     lcd2478.o (+RW,+ZI)
+   ;     mscuser.o (+RW,+ZI)
+   ; }
+  
+    ERAM 0xA0000000                                                     ;/*  外扩SDRAM默认在BANKA       */
+    {
+        * (+RW,+ZI)
+    }
+
+    HEAP_BOTTOM +0 UNINIT
+    {
+        Startup.o (HeapBottom)
+    }
+
+    HEAPS 0xA0800000 UNINIT                                             ;/*  根据外扩SDRAM实际大小更改  */
+    {
+        Startup.o (HeapTop)
+    }
+}
+;/*********************************************************************************************************
+;  END FILE
+;*********************************************************************************************************/

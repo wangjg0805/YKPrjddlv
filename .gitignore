@@ -1,0 +1,8 @@
+
+*.bak
+
+picture/*.bmp
+
+SupportFiles/*
+
+lpc2468a/lpc2468a_Data/*
