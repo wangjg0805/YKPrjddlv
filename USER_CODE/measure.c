@@ -405,20 +405,19 @@ float adjust(float v)
 	}	
 }
 
-uint8 autorange2(uint32 val)
+uint8 autorange2(float val)
 {
- 	uint16 tmp;
+
     uint8 flag;
-    flag = 0;
-	// adjust range
-	tmp = val / 1000;
-    if(tmp < Rmap[range][6].m_ain - 200) {
+    flag = 0;	// adjust range
+
+    if(val < Rmap[range][6].m_ain - 50) {
 		if(range != RANGE_2US) {
 		    range++;
 		     flag = 1;
 		}    
 	}
-	else if(tmp > Rmap[range][0].m_ain + 100)
+	else if(val > Rmap[range][0].m_ain + 50)
 	{
 		if(range != RANGE_200MS) {
 		    range--;
@@ -436,35 +435,50 @@ void measure_proc(void)
 		float val_filter; // filtered
 		float val_cali; // calibrated
 		float val_adjust; // adjusted
+		float last_v;
 
+static uint32 range_changed_cnt = 0;
 	/////////////////////////////////
 	    LED_CPU_RUN_Cpl();
 		val_raw = measure();
-		////////////////////
-		 LED_CPU_RUN_Cpl();
+
+		val_filter = filter(val_raw) / 1000; ////first filter
+
+		range_changed_cnt++;
 		if(automode) {
-		    if(0 == val_raw) {
-		        range++;
-		        reset_filter();
-		        if(range > RANGE_2US)
-                    range = RANGE_200MS;
-     	    } else {
-			    if(autorange2(val_raw)) 
-			        reset_filter();
-			}
-		} else {
-			int new_range = range_man;
-			if(new_range != range) {
+		    if(range_changed_cnt> 0) { //ÇÐ»»ºóµÈ´ý5´Î
+		        if(val_filter < 20) {
+		            range++;
+		            range_changed_cnt = 0;
+		            reset_filter();
+		            if(range > RANGE_2US)
+                        range = RANGE_200MS;
+     	        } else {
+			        if(autorange2(val_filter)) {
+			            range_changed_cnt = 0;
+			            reset_filter();
+			        }  
+		        }
+		        
+		        last_v = val_filter;
+		        
+		    } else {
+		    
+		        last_v = val_filter;
+		    }
+		}
+		else {
+			//int new_range = range_man;
+			if(range_man != range) {
 				reset_filter();
-				range = new_range;
+				range = range_man;
 			}
+			last_v = val_filter;
 		}
 	    
-		// filter
-		val_filter = filter(val_raw) / 1000;
-		ddlv_raw_data1 = val_filter;
+		ddlv_raw_data1 = last_v;
 		// do calibration
-		val_cali = calibrate(val_filter);
+		val_cali = calibrate(last_v);
 		//ddlv_raw_data2 = val_cali;
 		// do adjust for stable display
 		val_adjust = adjust(val_cali);

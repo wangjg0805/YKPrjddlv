@@ -95,7 +95,7 @@ float  filter_ad_NTC(uint16 ntc_data)
 
 
 
-
+ static uint32 buf_full_flag = 0;
 
 void ma_init(ma_t *ma, int count)
 {
@@ -111,20 +111,30 @@ void ma_reset(ma_t *ma)
 	ma->m_sum = 0.0f;
 	ma->m_ptr = 0;
 	ma->m_sum = 0;
+	
 	for(i = 0; i < ma->m_count; i++)
 	{
 		ma->m_val[i] = 0.0f;
-	};
+	}
+	
+	buf_full_flag = 0;
 }
 
 float ma_push(ma_t *ma, float v)
 {
+   
+    
 	ma->m_sum -= ma->m_val[ma->m_ptr];
 	ma->m_sum += v;
 
 	ma->m_val[ma->m_ptr] = v;
-	if(++ma->m_ptr >= ma->m_count)
+	if(++ma->m_ptr >= ma->m_count) {
+	    buf_full_flag = 1;
 		ma->m_ptr = 0;
+    }
 	
-	return ma->m_sum / ma->m_count;
+	if(1 == buf_full_flag)
+ 	    return ma->m_sum / ma->m_count;
+    else
+        return ma->m_sum / ma->m_ptr;
 }

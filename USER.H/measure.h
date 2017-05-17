@@ -15,7 +15,7 @@ float calibrate(float v);
 float adjust(float v);
 
 uint8 autorange(float val);
-uint8 autorange2(uint32 val);
+uint8 autorange2(float val);
 
 float kvalue(void);
 void kstart(void);

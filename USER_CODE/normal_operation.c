@@ -1474,6 +1474,8 @@ static void  display_main_area3(void)
     Set_ASC_Lib(Arial16B_Font);
     Set_Chr_Color(COL_WHITE,COL_BLACK);
     Put_Data(5,150, "%d",range);
+    Put_Data_Float(5,180, "%8.1f",ddlv_raw_data1);
+    Put_Data_Float(5,210, "%8.1f",ddlv_raw_data2);
     
     Set_ASC_Lib(Unit_Font);
     Set_Chr_Color(COL_WHITE,COL_BLACK);
@@ -1544,7 +1546,7 @@ static void  display_sys_caling_data2(void)
      Set_Chr_Color(COL_WHITE,COL_BLACK);
      
      Put_Line_Str(180, 230,Language_Str("当前校准步数是 ", "Now cali step"));
-     Put_Data(180+60, 230,"%02d", point2_cal_step);
+     Put_Data(180+200, 230,"%02d", point2_cal_step);
     
      Clr_Bar(120, 150,    30,40,COL_DEEPGREEN);
      Clr_Bar(150, 150,300-30,40,COL_THINBLUE);

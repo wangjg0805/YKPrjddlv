@@ -176,10 +176,10 @@ BOOLEAN  Get_PositionAD(INT32U *PositionAD)
      X1 = 0; Y1 = 0;
      X2 = 0; Y2 = 0;
      /////////////////////////////////////////
-	 
+	 Start_SPI();
 	 if(0 == (IO_AD7843_IRQPIN&AD7843_IRQ))
 	   {//ÓÐ¼ü°´ÏÂ
-	         Start_SPI();
+	         //Start_SPI();
              do {
 	                X2 = X1;
 	                Y2 = Y1;

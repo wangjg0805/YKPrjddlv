@@ -1052,20 +1052,31 @@ static  sint32 Menu_Serv_DDLV_Key(uint32 key_c,sint32 op)
   	                  Write_EEPROM(EEP_DDLV_SYSCAL_CHECK,buf, 4); 
   	                  for(i=0;i<20000;i++){;}	  
                       Init_Sys_Cal2_Varible();
+                      
+                      i = 123456789;
                   }
     	           break;
     	       default:
     	           break;
     	       }
-    	       point2_cal_step++;
-    	       range_man = (point2_cal_step-1) / 7; 
+    	       
+    	       if(123456789 == i) {
+    	           op_id =  MENU_SERV_MAIN_SEL; 
+    	       
+    	       } else {
+    	           point2_cal_step++;
+    	           range_man = (point2_cal_step-1) / 7; 
+    	       }
+    	       
     	       break;  
+       	
        	case 3:  //skip
        	       if(1 == point2_cal_step%7) {
        	           point2_cal_step += 7;
        	           range_man = (point2_cal_step-1) / 7;
        	       }    
        	       break;
+       	
        	 
        	case 4://
        	       ////////////////////////////////
@@ -1075,6 +1086,8 @@ static  sint32 Menu_Serv_DDLV_Key(uint32 key_c,sint32 op)
    	   }
    	  //  Key_Status = KEY_DO_OVER;
     }
+    
+    
     return(op_id);
   }  
 //**********************************************************************
@@ -1315,9 +1328,9 @@ const uint32 res_cal_data[] = {
 5,      7,      9,       20,      30,      40,      50,
 50,     70,     90,      200,     300,     400,     500,
 500,    700,    900,     2000,    3000,    4000,    5000,
-5000,   7000,   90000,   20000,   30000,   40000,   50000,
-50000,  70000,  900000,  200000,  300000,  400000,  500000,
-500000, 700000, 9000000, 2000000, 3000000, 4000000, 5000000
+5000,   7000,   9000,    20000,   30000,   40000,   50000,
+50000,  70000,  90000,   200000,  300000,  400000,  500000,
+500000, 700000, 900000,  2000000, 3000000, 4000000, 5000000
 };
 
 
