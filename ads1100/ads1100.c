@@ -6,24 +6,27 @@ static uint32   ad_sample_channel;
 
 void CD4053_mode(uint8 v)
 {
-    if(v==0) {
+    if(v==9) {
         CD4053_EN_SET;
     }
     else {
     
-        CD4053_EN_CLR;
         if(v&0x01)
             CD4053_A_SET;
         else
             CD4053_A_CLR;
+        
         if(v&0x02)
             CD4053_B_SET;
         else
             CD4053_B_CLR;
-         if(v&0x04)
+        
+        if(v&0x04)
             CD4053_C_SET;
         else
             CD4053_C_CLR;             
+            
+        CD4053_EN_CLR;
     }
 }
 
