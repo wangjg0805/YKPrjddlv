@@ -51,7 +51,11 @@ extern const  unsigned char    liquidNull5566[];
 extern const  unsigned char     liquiderr6066[];
 ////////////////////////////////////////////////
 ///DDLV BMP
-extern const  unsigned char     conssetup9060[];
-extern const  unsigned char     modesetup9060[];
+//extern const  unsigned char     conssetup9060[];
+extern const  unsigned char     consetupE9060[];
+extern const  unsigned char     consetupC9060[];
+extern const  unsigned char     modesetupE9060[];
+extern const  unsigned char     modesetupC9060[];
+//extern const  unsigned char     modesetup9060[];
 
 #endif

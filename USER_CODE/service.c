@@ -1346,11 +1346,11 @@ void Serv_DDLV_Menu_Disp(void)
   Put_Data(700,115,"%d",point2_cal_step);                //steps
   
   if(point2_cal_step > 35) {
-      Put_Data_Float(650,50,"%.1f",res_cal_data[point2_cal_step] / 1000000);
-      Put_Char(750,50,'M');  
+      Put_Data_Float(650,50,"%.1f",res_cal_data[point2_cal_step] / 1000000.0);
+      Put_Char(730,50,'M');  
   } else if(point2_cal_step > 21) {
-      Put_Data_Float(650,50,"%.1f",res_cal_data[point2_cal_step] / 1000);
-      Put_Char(750,50,'K');  
+      Put_Data_Float(650,50,"%.1f",res_cal_data[point2_cal_step] / 1000.0);
+      Put_Char(730,50,'K');  
   } else
       Put_Data(650, 50,"%d",res_cal_data[point2_cal_step]);  //cal_res
   

@@ -1006,9 +1006,9 @@ uint8  SystemInit(void)
     Set_Chr_Color(COL_WHITE,COL_BLACK);  
   
   	if(1==version_811)  
-     Put_Str(280,160,Language_Str("P812型 电导率计",  "P812  Conductometer meter"));
+     Put_Str(280,160,Language_Str("P812型 电导率计",  "P812  Electric Conductometer"));
     else
-     Put_Str(280,160,Language_Str("P802型 电导率仪",  "P802  Conductometer meter"));
+     Put_Str(280,160,Language_Str("P802型 电导率仪",  "P802  Electric Conductometer"));
   
   	 Put_Str(280,210,Language_Str("系统初始化 ......",  "System initializing......"));
 	

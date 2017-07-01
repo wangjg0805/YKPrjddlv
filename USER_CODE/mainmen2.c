@@ -1977,8 +1977,8 @@ void SystemConf_Interface(sint32 cur_menu_op)
      Put_Bmp( 10, 200,    standsel9060,0);  //
      Put_Bmp(110, 200, divisionsel9060,0);  //
      #else
-     Put_Bmp( 10, 200,    conssetup9060,0);  //
-     Put_Bmp(110, 200,    modesetup9060,0);  //
+     Put_Bmp( 10, 200,    consetupC9060,0);  //
+     Put_Bmp(110, 200,    modesetupC9060,0);  //
      #endif
      Put_Bmp(210, 200,     tempcfg9060,0);  //
      
@@ -1996,8 +1996,8 @@ void SystemConf_Interface(sint32 cur_menu_op)
      Put_Bmp( 10, 200,    standselen9060,0);  //
      Put_Bmp(110, 200, divisionselen9060,0);  //
      #else
-     Put_Bmp( 10, 200,    conssetup9060,0);  //
-     Put_Bmp(110, 200,    modesetup9060,0);  //
+     Put_Bmp( 10, 200,    consetupE9060,0);  //
+     Put_Bmp(110, 200,    modesetupE9060,0);  //
      #endif
      Put_Bmp(210, 200,     tempcfgen9060,0);  //
       
@@ -2052,8 +2052,8 @@ uint32  Action_SystemConfMenu(uint16 x,uint16 y)
              case  4:    Put_Bmp( 10, 200,     standsel9060,1); break; //
              case  5:    Put_Bmp(110, 200,  divisionsel9060,1); break; //
              #else
-             case  4:    Put_Bmp( 10, 200,    conssetup9060,1); break; //
-             case  5:    Put_Bmp(110, 200,    modesetup9060,1); break; //
+             case  4:    Put_Bmp( 10, 200,    consetupC9060,1); break; //
+             case  5:    Put_Bmp(110, 200,    modesetupC9060,1); break; //
              #endif
              case  6:    Put_Bmp(210, 200,      tempcfg9060,1); break; //
            
@@ -2074,8 +2074,8 @@ uint32  Action_SystemConfMenu(uint16 x,uint16 y)
              case  4:    Put_Bmp( 10, 200,     standselen9060,1); break; //
              case  5:    Put_Bmp(110, 200,  divisionselen9060,1); break; //
              #else
-             case  4:    Put_Bmp( 10, 200,     conssetup9060,1); break; //
-             case  5:    Put_Bmp(110, 200,     modesetup9060,1); break; //
+             case  4:    Put_Bmp( 10, 200,     consetupE9060,1); break; //
+             case  5:    Put_Bmp(110, 200,     modesetupE9060,1); break; //
              #endif
              case  6:    Put_Bmp(210, 200,      tempcfgen9060,1); break; //
              
@@ -2103,8 +2103,8 @@ uint32  Action_SystemConfMenu(uint16 x,uint16 y)
             case  4:    Put_Bmp( 10, 200,     standsel9060,0); break; //
             case  5:    Put_Bmp(110, 200,  divisionsel9060,0); break; //
             #else
-            case  4:    Put_Bmp( 10, 200,     conssetup9060,0); break; //
-            case  5:    Put_Bmp(110, 200,     modesetup9060,0); break; //
+            case  4:    Put_Bmp( 10, 200,     consetupC9060,0); break; //
+            case  5:    Put_Bmp(110, 200,     modesetupC9060,0); break; //
             #endif
             case  6:    Put_Bmp(210, 200,      tempcfg9060,0); break; //
             
@@ -2125,8 +2125,8 @@ uint32  Action_SystemConfMenu(uint16 x,uint16 y)
             case  4:    Put_Bmp( 10, 200,     standselen9060,0); break; //
             case  5:    Put_Bmp(110, 200,  divisionselen9060,0); break; //
             #else
-            case  4:    Put_Bmp( 10, 200,     conssetup9060,0); break; //
-            case  5:    Put_Bmp(110, 200,     modesetup9060,0); break; //
+            case  4:    Put_Bmp( 10, 200,     consetupE9060,0); break; //
+            case  5:    Put_Bmp(110, 200,     modesetupE9060,0); break; //
             #endif
             case  6:    Put_Bmp(210, 200,      tempcfgen9060,0); break; //
             

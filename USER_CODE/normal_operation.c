@@ -324,11 +324,13 @@ static  void  Mode_Status_Display2(void)
   
          /////////////////////////display oc
     	  Set_ASC_Lib(GulimChe48_Font);
-    	  Set_Chr_Color(COL_BLACK,COL_THINGRAY);
+    	  //Set_Chr_Color(COL_BLACK,COL_THINGRAY);
+    	  Set_Chr_Color(COL_WHITE,COL_BLACK);
+    	  
     	  if(TEMP_UNIT_OC == temp_unit)
-    	  Put_Char(560, 345,'c');
+    	  Put_Char(560-350, 345,'c');
     	  else
-    	  Put_Char(560, 345,'f');    
+    	  Put_Char(560-350, 345,'f');    
   
           ////////////////////////////////////
           Stable_Status_Display(50,130);
@@ -411,19 +413,21 @@ static void Oper_Main_Assi_Pro(void)
     }
         
     //以下信息 显示温度   
-    Set_Graphic_Color(COL_BLACK,COL_THINGRAY);
-	Set_Chr_Color(COL_WHITE,COL_BLACK);
-	Fill_Circle(570,330,15);
+    Set_Graphic_Color(COL_WHITE,COL_WHITE);
+	Set_Chr_Color(COL_BLACK,COL_WHITE);
+	Fill_Circle(570-350,330,15);
+	
+	
 	Set_ASC_Lib(Arial16B_Font);	
 	if(temp_float_ptc==TEMP_SENSOR_NC_VALUE) {
 	    manual_temp_comp_flag = TRUE; 
-	    Put_Char(565,320,'M');
+	    Put_Char(565-350,320,'M');
 	    Set_ASC_Lib(GulimChe48A_Font);
-	    Set_Chr_Color(COL_BLACK,COL_THINGRAY);
+	    Set_Chr_Color(COL_WHITE,COL_BLACK);
 	    if(TEMP_UNIT_OC == temp_unit)
-	        Put_Data_Float(420,320,"%4.1f",(float)temp_comp_manual); //此处是手动输入的补偿温度
+	        Put_Data_Float(420-365,320,"%4.1f",(float)temp_comp_manual); //此处是手动输入的补偿温度
 	    else
-	        Put_Data(430,320,"%3d",(uint32)(temp_comp_manual*9/5+32.5));
+	        Put_Data(430-365,320,"%3d",(uint32)(temp_comp_manual*9/5+32.5));
 	  ////////////////////////////////////////////////////
 	  /*
 	  if((temp_comp_manual<TEMP_SENSOR_LOW)||(temp_comp_manual>TEMP_SENSOR_HIGH))
@@ -433,14 +437,14 @@ static void Oper_Main_Assi_Pro(void)
 	  */
     } else {
 	    manual_temp_comp_flag = FALSE;
-	    Put_Char(565,320,'A');
+	    Put_Char(565-350,320,'A');
 	    Set_ASC_Lib(GulimChe48A_Font);
-	    Set_Chr_Color(COL_BLACK,COL_THINGRAY);
+	    Set_Chr_Color(COL_WHITE,COL_BLACK);
 	    //Put_Data_Float(420,320,"%4.1f",23.4);
 	    if(TEMP_UNIT_OC == temp_unit)
-	        Put_Data_Float(420,320,"%4.1f",temp_float_ptc);
+	        Put_Data_Float(420-365,320,"%4.1f",temp_float_ptc);
 	    else
-	        Put_Data(430,320,"%3d",(uint32)(temp_float_ptc*9/5+32.5));
+	        Put_Data(430-365,320,"%3d",(uint32)(temp_float_ptc*9/5+32.5));
 	  ////////////////////////////////////////////////////
 	  /*
 	  if((temp_float_ptc<TEMP_SENSOR_LOW)||(temp_float_ptc>TEMP_SENSOR_HIGH))
@@ -965,12 +969,12 @@ void Put_Oper_Interface(sint32 op)
     Clr_Bar(3,3,SCR_XSIZE-6,SCR_YSIZE-6, COL_THINBLUE);      //ALL black
     ////水平
     Clr_Bar(0,        80,      SCR_XSIZE,   3, COL_THINCYAN);  //分割线
-    Clr_Bar(0,       400,      SCR_XSIZE,   3, COL_THINCYAN);  //分割线
+    //Clr_Bar(0,       400,      SCR_XSIZE,   3, COL_THINCYAN);  //分割线
     Clr_Bar(0,   400-100,  SCR_XSIZE-200,   3, COL_THINCYAN);  //分割线
    
     
     ////垂直
-    Clr_Bar(400,     300,             3,100, COL_THINCYAN);  //分割线
+    //Clr_Bar(400,     300,             3,100, COL_THINCYAN);  //分割线
     Clr_Bar(600,      80,             3,320, COL_THINCYAN);  //分割线
  
     //显示LOGO
@@ -1019,10 +1023,10 @@ void Put_Oper_Interface(sint32 op)
     }
     
     //主显示区域黑底白字
-    Clr_Bar(3,80+3,    SCR_XSIZE-200-3,SCR_YSIZE-260-3,     COL_BLACK);        //ALL black
+    Clr_Bar(3,80+3,    SCR_XSIZE-200-3,SCR_YSIZE-160-3,     COL_BLACK);        //ALL black
     //mV 显示区 温度显示区
-    Clr_Bar(  3,80+220+3,SCR_XSIZE-400-3,SCR_YSIZE-160-220-3, COL_THINGRAY);    
-    Clr_Bar(403,80+220+3,SCR_XSIZE-600-3,SCR_YSIZE-160-220-3, COL_THINGRAY);   
+    //Clr_Bar(  3,80+220+3,SCR_XSIZE-400-3,SCR_YSIZE-160-220-3, COL_THINGRAY);    
+    //Clr_Bar(403,80+220+3,SCR_XSIZE-600-3,SCR_YSIZE-160-220-3, COL_THINGRAY);   
     //系统信息区
     Clr_Bar(603,    80+3,          200-6,    SCR_YSIZE-160-3, COL_DEEPGRAY);   
         
@@ -1456,45 +1460,54 @@ static void  display_main_area3(void)
    Set_ASC_Lib(GulimChe150_Font);
    Set_Chr_Color(COL_WHITE,COL_BLACK);
   
-   if (DDLV_unit == MS_CM) {
-       if((ddlv_data > 20) && (ddlv_data < 1000))
-           Put_Data_Float(110,125, "%5.1f",ddlv_data);
-       else 
-           Put_Data_Float(110,125, "%5.2f",ddlv_data);    
-   } else {
+   switch(DDLV_Param) {
+   case PARAM_DDLV:
        if((ddlv_data >= 200)&&(ddlv_data < 10000))
-           Put_Data(110,125, "%5d",((uint32)ddlv_data));
+           Put_Data(110,125+30, "%5d",((uint32)ddlv_data));
        else if (ddlv_data >= 20)
-           Put_Data_Float(110,125, "%5.1f",ddlv_data);
+           Put_Data_Float(110,125+30, "%5.1f",ddlv_data);
        else 
-           Put_Data_Float(110,125, "%5.2f",ddlv_data);         
-  }
-      
+           Put_Data_Float(110,125+30, "%5.2f",ddlv_data);     
+       break;
+   case PARAM_SALTY:
+       Put_Data_Float(110,125+30, "%5.1f",ddlv_data);
+       break;
+   case PARAM_TDS:
+       Put_Data_Float(110,125+30, "%5.2f",ddlv_data);
+       break;
+   default:
+       break;
+   }
     //////////////////////////////////////////////////////////
+   /*
     Set_ASC_Lib(Arial16B_Font);
     Set_Chr_Color(COL_WHITE,COL_BLACK);
     Put_Data(5,150, "%d",range);
     Put_Data_Float(5,180, "%8.1f",ddlv_raw_data1);
     Put_Data_Float(5,210, "%8.1f",ddlv_raw_data2);
-    
+    */
     Set_ASC_Lib(Unit_Font);
     Set_Chr_Color(COL_WHITE,COL_BLACK);
-    if(PARAM_TDS == DDLV_Param) {
+    switch(DDLV_Param) {
+    case PARAM_DDLV:
         if(US_CM == DDLV_unit)
-            Put_Line_Str(465, 245,Language_Str("mg/L","mg/L")); 
+            Put_Line_Str(465, 245+70,Language_Str("uS/cm","uS/cm")); 
         else
-            Put_Line_Str(465, 245,Language_Str(" g/L"," g/L")); 
-    }
-    else if(PARAM_SALTY == DDLV_Param) {
+            Put_Line_Str(465, 245+70,Language_Str("mS/cm","mS/cm"));
+        break;
+    case PARAM_TDS:
+        if(US_CM == DDLV_unit)
+            Put_Line_Str(465, 245+70,Language_Str("mg/L","mg/L")); 
+        else
+            Put_Line_Str(465, 245+70,Language_Str(" g/L"," g/L")); 
+        break;
+    case PARAM_SALTY:
          //盐度只有一个单位:  %
-        Put_Char(500, 245,'%'); 
+        Put_Char(500, 245+70,'%');
+        break;
+    default:
+        break;     
     }
-    else {
-        if(US_CM == DDLV_unit)
-            Put_Line_Str(465, 245,Language_Str("uS/cm","uS/cm")); 
-        else
-            Put_Line_Str(465, 245,Language_Str("mS/cm","mS/cm")); 
-    }  
 }
 
 
