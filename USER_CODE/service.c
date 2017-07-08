@@ -1024,50 +1024,51 @@ static  sint32 Menu_Serv_DDLV_Key(uint32 key_c,sint32 op)
   	           }
   	           break;
     	case 2:
-    	       k = ddlv_raw_data1;
-    	       j = point2_cal_step%7;
-    	       switch(j) {
-    	       case  SYS_CAL_RANG1_1:   
-               case  SYS_CAL_RANG1_2:
-               case  SYS_CAL_RANG1_3:
-               case  SYS_CAL_RANG1_4:
-               case  SYS_CAL_RANG1_5:
-               case  SYS_CAL_RANG1_6:
-                   buf[(j-1)*2]   =  k & 0xff;
-                   buf[(j-1)*2+1] = (k>>8) & 0xff;   
-                   break;
-               case  0:
-                  buf[12]   =  k & 0xff;
-                  buf[13]   = (k>>8) & 0xff;
-                  buf[14]   =  0x55;
-                  buf[15]   =  0xaa;
-                  Write_EEPROM(EEP_DDLV_SYSCAL_RANGE1+0x10*(point2_cal_step/7-1),buf, 16); 
-  	              for(i=0;i<20000;i++){;}
-  	              if(range_man == RANGE_2US) {
-  	              //////////////5M校准完毕后手动返回测量模式  
-                      buf[0] = 0x88;
-  	                  buf[1] = 0x99;
-  	                  buf[2] = 0xaa;
-  	                  buf[3] = 0xbb;  
-  	                  Write_EEPROM(EEP_DDLV_SYSCAL_CHECK,buf, 4); 
-  	                  for(i=0;i<20000;i++){;}	  
-                      Init_Sys_Cal2_Varible();
-                      
-                      i = 123456789;
-                  }
-    	           break;
-    	       default:
-    	           break;
+    	       if(stable_flag == 1) {  //only in stable status
+    	           k = ddlv_raw_data1;
+    	           break_stable_flag = 1;
+    	           j = point2_cal_step%7;
+    	           switch(j) {
+    	           case  SYS_CAL_RANG1_1:   
+                   case  SYS_CAL_RANG1_2:
+                   case  SYS_CAL_RANG1_3:
+                   case  SYS_CAL_RANG1_4:
+                   case  SYS_CAL_RANG1_5:
+                   case  SYS_CAL_RANG1_6:
+                       buf[(j-1)*2]   =  k & 0xff;
+                       buf[(j-1)*2+1] = (k>>8) & 0xff;   
+                       break;
+               	   case  0:
+                       buf[12]   =  k & 0xff;
+                       buf[13]   = (k>>8) & 0xff;
+                       buf[14]   =  0x55;
+                       buf[15]   =  0xaa;
+                       Write_EEPROM(EEP_DDLV_SYSCAL_RANGE1+0x10*(point2_cal_step/7-1),buf, 16); 
+  	                   for(i=0;i<20000;i++){;}
+  	                   if(range_man == RANGE_2US) {
+  	                   //////////////5M校准完毕后手动返回测量模式  
+                          buf[0] = 0x88;
+  	                      buf[1] = 0x99;
+  	                      buf[2] = 0xaa;
+  	                      buf[3] = 0xbb;  
+  	                      Write_EEPROM(EEP_DDLV_SYSCAL_CHECK,buf, 4); 
+  	                      for(i=0;i<20000;i++){;}	  
+                          Init_Sys_Cal2_Varible();
+                          i = 123456789;
+                       }
+    	               break;
+    	           default:
+    	               break;
+    	           }
+    	       
+    	           if(123456789 == i) {
+    	                op_id =  MENU_SERV_MAIN_SEL; 
+    	       
+    	            } else {
+    	                point2_cal_step++;
+    	                range_man = (point2_cal_step-1) / 7; 
+    	           }
     	       }
-    	       
-    	       if(123456789 == i) {
-    	           op_id =  MENU_SERV_MAIN_SEL; 
-    	       
-    	       } else {
-    	           point2_cal_step++;
-    	           range_man = (point2_cal_step-1) / 7; 
-    	       }
-    	       
     	       break;  
        	
        	case 3:  //skip
@@ -1340,19 +1341,25 @@ void Serv_DDLV_Menu_Disp(void)
 
   Set_Chr_Color(COL_WHITE,COL_BLACK);
   Put_Data(300,115,"%d",range_man);  //power_ch
-  Put_Data_Float(350,115,"%7.1f",ddlv_raw_data1);    //res_ch
-  Put_Data_Float(550,115,"%.5f",ddlv_raw_data2);    //res_ch
+  Put_Data_Float(300,115,"%7.1f",ddlv_raw_data1);    //res_ch
+  Put_Data_Float(400,115,"%7.1f",ddlv_raw_data2);    //res_ch
+  if( sample_flag == 1)
+       Put_Line_Str(Language_Pos(600, 550),  115,Language_Str("OK","OK"));
+  else
+       Put_Line_Str(Language_Pos(600, 550),  115,Language_Str("NO","NO"));      
+  
   
   Put_Data(700,115,"%d",point2_cal_step);                //steps
   
-  if(point2_cal_step > 35) {
-      Put_Data_Float(650,50,"%.1f",res_cal_data[point2_cal_step] / 1000000.0);
-      Put_Char(730,50,'M');  
-  } else if(point2_cal_step > 21) {
-      Put_Data_Float(650,50,"%.1f",res_cal_data[point2_cal_step] / 1000.0);
-      Put_Char(730,50,'K');  
+  if(point2_cal_step > 36) {
+      Put_Data_Float(600,50,"%8.1f",res_cal_data[point2_cal_step] / 1000000.0);
+      Put_Char(700,50,'M');  
+  } else if(point2_cal_step > 17) {
+      Put_Data_Float(600,50,"%8.1f",res_cal_data[point2_cal_step] / 1000.0);
+      Put_Char(700,50,'K');  
   } else
-      Put_Data(650, 50,"%d",res_cal_data[point2_cal_step]);  //cal_res
+      Put_Data(600, 50,"%8d",res_cal_data[point2_cal_step]);  //cal_res
+      
   
 }
 //**********************************************************************

@@ -79,6 +79,17 @@ const float Rmap_float[6][8] = {
  rmap_t RMAP_2US[8];
  */
  
+ const float range_vary_scope[]={
+ 0.2,//RANGE_200MS 即2个分辨率的波动范围(0.1*2)
+ 0.02,//RANGE_20MS
+ 2,//RANGE_2MS   
+ 0.2,//RANGE_200US 
+ 0.02,//RANGE_20US
+ 0.02//RANGE_2US
+};
+
+
+
 void rmap_var_init(void)
 {
     uint8 i,j;
@@ -278,7 +289,6 @@ const range_config_t range_configs[] = {
 	{  0,   1,  5000,  2301,  1114,  73,  16,    10,   16, Rmap[4],     1000000/550000.0f,    1000000/50000.0f },
 	{  0,   0,  5000,  2301,  1114,  73,  16,    10,   16, Rmap[5],     1000000/5500000.0f,   1000000/500000.0f },
 };
-*/
 
 const range_config_t range_configs[] = {
 	// 124/41/73
@@ -289,7 +299,19 @@ const range_config_t range_configs[] = {
 	{  9,   1,  5000,   925,   325,  73,  24,    10,   16, Rmap[4],     1000000/550000.0f,    1000000/50000.0f },
 	{  9,   0,  5000,  2301,  1114,  73,  16,    10,   16, Rmap[5],     1000000/5500000.0f,   1000000/500000.0f },
 };
+*/
 
+const range_config_t range_configs[] = {
+	// 124/41/73
+	{  0,   1,   550,   239,    74,  73,   3,    80,  128, Rmap[0],     1000000/70.0f,        1000000/4.5f },
+	{  4,   0,   500,   239,    74,  73,   2,    80,  128, Rmap[1],     1000000/600.0f,       1000000/50.0f },
+	{  3,   0,  1000,   468,   157,  73,   4,    40,   64, Rmap[2],     1000000/6000.0f,      1000000/500.0f },
+	{  2,   1,  2000,   925,   325,  73,   8,    20,   32, Rmap[3],     1000000/60000.0f,     1000000/5000.0f },
+	
+	//{  9,   1,  5000,   925,   325,  73,  24,    10,   16, Rmap[4],     1000000/600000.0f,    1000000/50000.0f },
+	{  9,   1,  5000,  2301,  1114,  73,  16,    10,   16, Rmap[4],     1000000/600000.0f,    1000000/50000.0f },
+	{  9,   0,  5000,  2301,  1114,  73,  16,    10,   16, Rmap[5],     1000000/100000000.0f,   1000000/500000.0f },
+};
 
 
 static ma_t ma;
@@ -410,52 +432,49 @@ float calibrate(float v)
 	return 0.0f;
 }
 
-float adjust(float v)
+/*
+void stable_adjust(float v)
 {
     static float lastdata= 0.1;
     static uint32 cnt = 0;
     
     float errf; // error for autorange
-    return(v);
  	
  	errf = (v - lastdata) / v;
 	if(errf < 0)
 		errf = -errf;
 	
-	if(errf < 0.05) {
+	if(errf < 0.02) {
 	    cnt++;
-	    if(cnt > 5)
+	    if(cnt > 3)
 	        stable_flag = 1;
-	    else 
-	        stable_flag = 0;
-	        
-	    if(cnt > 25) {
-	        return(lastdata);   
-		} else {
-		    lastdata = v;
-		    return(v);
-	    }
 	} else {
+	    cnt = 0;    
 	    stable_flag = 0;
-	    cnt = 0;
-	    lastdata = v;
-	    return(v);
 	}	
+	
+	lastdata = v;
 }
+*/
 
 uint8 autorange2(float val)
 {
-
+    uint8 tmp;
     uint8 flag;
     flag = 0;	// adjust range
 
-    if(val < Rmap[range][6].m_ain - 50) {
+    if(range == 0)
+        tmp = 6;
+    else
+        tmp = 5;
+
+    if(val < Rmap[range][tmp].m_ain - 100) {
 		if(range != RANGE_2US) {
 		    range++;
 		     flag = 1;
 		}    
 	}
-	else if(val > Rmap[range][0].m_ain + 50)
+	else if(val > Rmap[range][0].m_ain + 100)
 	{
 		if(range != RANGE_200MS) {
 		    range--;
@@ -465,6 +484,106 @@ uint8 autorange2(float val)
 	
 	return(flag);
 }
+
+#define PRE_FILTER_LENGTH  16
+
+float Prefilter_proc(float rawdata)
+{
+    static float buf[PRE_FILTER_LENGTH];
+    static uint8 index = 0;
+    
+    static uint32 cnt = 0;
+    static float last_data = 0;
+           float tmp;
+    
+    uint8 i;
+    
+    if(break_stable_flag == 1) {
+        break_stable_flag = 0;
+        stable_flag = 0;
+        sample_flag = 0;
+        cnt = 0;
+    }
+    
+    
+    tmp = rawdata - last_data;
+    if(tmp < 0)
+        tmp = -tmp;
+        
+    if(tmp > 100) {
+        cnt = 0;
+        stable_flag = 0;
+        sample_flag = 0;
+        for(i=0;i<PRE_FILTER_LENGTH;i++)
+            buf[i] = rawdata;
+        last_data = rawdata;    
+        return(rawdata);       
+    } else {
+        cnt++;
+        if(cnt > 25)
+            stable_flag = 1;
+        if(cnt > 50)
+            sample_flag = 1;    
+        buf[index++] = rawdata;
+        if(index == PRE_FILTER_LENGTH)
+            index = 0;
+  
+        last_data = rawdata; 
+	    tmp = 0;  
+        for(i=0;i<PRE_FILTER_LENGTH;i++)   
+	        tmp += buf[i];
+	    return(tmp/PRE_FILTER_LENGTH);
+    }
+}
+
+
+#define FILTER_LENGTH 32
+
+float filter_proc(float just)
+{
+    static float buf[FILTER_LENGTH];
+    static uint8 index = 0;
+    static uint32 cnt = 0;
+    static float tmp,tmp2;
+    uint8 i;
+    float buf_tmp[FILTER_LENGTH];
+    float  sum;
+    uint8  pass;
+    
+
+    if(stable_flag == 0) {
+        for(i=0;i<FILTER_LENGTH;i++)
+            buf[i] = just;
+        index = 0;   
+        cnt = 0; 
+        return(just);
+    } else {
+        buf[index++] = just;
+        if(index == FILTER_LENGTH)
+            index = 0;
+        tmp = 0;
+        
+        //sort
+        for(i=0;i<FILTER_LENGTH;i++)
+            buf_tmp[i] = buf[i];
+                 
+        for(pass = 0;pass < FILTER_LENGTH - 1 ;pass++) {
+		     for( i = 0;i < (FILTER_LENGTH - 1 - pass);i++) {
+			      if(buf_tmp[i] > buf_tmp[i+1]) {
+			          sum = buf_tmp[i];
+		   	          buf_tmp[i] = buf_tmp[i+1];
+			          buf_tmp[i+1] = sum ;
+			      }
+		     }
+	    }
+	    
+	    sum = 0;  
+        for(i=8;i<24;i++)   
+	        sum += buf_tmp[i];    
+	    return(sum/16);
+    }
+}
+
 
 /////////////added 
 void measure_proc(void)
@@ -513,12 +632,15 @@ static uint32 range_changed_cnt = 0;
 			}
 			last_v = val_filter;
 		}
+	 
 	    
-		ddlv_raw_data1 = last_v;
+        ddlv_raw_data1 = Prefilter_proc(last_v);
+		//stable_adjust(val_cali);
 		// do calibration
 		val_cali = calibrate(last_v);
-		//ddlv_raw_data2 = val_cali;
 		// do adjust for stable display
-		val_adjust = adjust(val_cali);
-		ddlv_raw_data2 = val_adjust; 
+		//ddlv_raw_data2 = val_adjust;
+		ddlv_raw_data2 = filter_proc(val_cali);
+		
+	
 }

@@ -55,8 +55,7 @@ uint32      Error_Info_Flag,Warning_Info_Flag;
 
 uint32      ph_negative_flag,mv_negative_flag,full_flag;
 
-uint32      ad_raw_data,flag_new_data,stable_flag;   //数据相关变量
-uint32      ADS1100_Raw,sample_flag;
+uint32      ad_raw_data,flag_new_data,stable_flag,break_stable_flag,sample_flag;
 
 float       mv_data,ph_data,get_coef,ddlv_data;
 
