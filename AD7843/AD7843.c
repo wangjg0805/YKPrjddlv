@@ -16,8 +16,6 @@
 #include  "ad7843.h"
 
 /***************************************************************************************/
- static INT32U buf_index,key_bufx[32],key_bufy[32];
- 
  INT32U      x0,y0,xmid,ymid,xmax,ymax;                      //用户原点和最大点设置
 
 //**************************************************************************************/
@@ -25,23 +23,14 @@
 //  输入参数   无
 //  输出参数   无
 /***************************************************************************************/
-void ADS7843_KeyBufClear(void)
-{
-    INT32U i;
-    for(i=0;i<32;i++) {
-        key_bufx[i] = 0;
-        key_bufy[i] = 0;
-    }
-    buf_index = 0;
-	 
-}
+
 void  ADS7843PIN_Init(void)
 	{
     SCS = 	SCS | 0x01 ;    //use FAST IO  
 	IO_AD7843_IRQDIR  &=  (~AD7843_IRQ) ; 
 	IO_AD7843_DIR  |=   AD7843_CLK | AD7843_CS | AD7843_DIN ;
 	IO_AD7843_DIR  &=  (~AD7843_BUSY) & (~AD7843_DOUT) ;
-	ADS7843_KeyBufClear();
+	//ADS7843_KeyBufClear();
    }
 
 /***************************************************************************************/
@@ -140,6 +129,7 @@ void DlyMs(INT32U m)        // adjustable
   }while(m--);
 }
 
+/*
 INT32U KeyAD_Proc(INT32U x,INT32U y)
 {
     INT32U i,x_tmp,y_tmp;
@@ -160,6 +150,7 @@ INT32U KeyAD_Proc(INT32U x,INT32U y)
     y_tmp = y_tmp/buf_index;
     return(((x_tmp<<16)&0xffff0000) + (y_tmp&0x0000ffff));
 }
+*/
 /***************************************************************************************/
 //  函数名     Get_PositionAD(void)
 //  输入参数   指针变量，用于存储AD数值:高16位：X;低16位：Y 
@@ -180,10 +171,14 @@ BOOLEAN  Get_PositionAD(INT32U *PositionAD)
 	 if(0 == (IO_AD7843_IRQPIN&AD7843_IRQ))
 	   {//有键按下
 	         //Start_SPI();
-             do {
+	         if(Key_Status == KEY_PRESS){
+                  valid = OK; 
+		          *PositionAD = key_data_last;		 
+		     } else {
+                do {
 	                X2 = X1;
 	                Y2 = Y1;
-	                DlyMs(10000);
+	                DlyMs(5000);
 	                WriteCharTo7843(STARTBIT|MX|CONVER12BIT|SINGL_END|PD_ENABLE); //X坐标
 	                X1 = ReadFromCharFrom7843();
                     WriteCharTo7843(STARTBIT|MY|CONVER12BIT|SINGL_END|PD_ENABLE); //Y
@@ -195,21 +190,16 @@ BOOLEAN  Get_PositionAD(INT32U *PositionAD)
 	         if(0 == (IO_AD7843_IRQPIN&AD7843_IRQ)) {
 	              if((KEY_DO_OVER+KEY_RELEASE) == Key_Status) {
 	                Key_Status = KEY_PRESS;
-	              }    
-	              valid = OK;
-	              key_data_last= KeyAD_Proc((X1+X2)/2,(Y1+Y2)/2);
-                  *PositionAD =  key_data_last;
-	         } else if(Key_Status == KEY_PRESS){
-                  valid = OK; 
-		          *PositionAD = key_data_last;		 
-		          Key_Status  = KEY_DO_START;     //发送执行指令 
-		          key_data_last = 0;   
-		          ADS7843_KeyBufClear();
-             } else {
+	                valid = OK;
+	                key_data_last= ((X1<<16)&0xffff0000) + (Y1&0x0000ffff);
+	                *PositionAD = key_data_last;
+	              }     
+	         } else {
                valid = FALSE;
                *PositionAD = 0;
-             } 
-      }
+            }
+         }
+     }
       ////////////////////////////////////////////////////////////////  
 	 else
 	 {  
@@ -219,8 +209,7 @@ BOOLEAN  Get_PositionAD(INT32U *PositionAD)
 		  *PositionAD = key_data_last;		 
 		  Key_Status  = KEY_DO_START;     //发送执行指令 
 		  key_data_last = 0;   
-		  ADS7843_KeyBufClear();
-         }
+	     }
        else if(Key_Status ==KEY_DO_OVER) {
            valid = FALSE;
            *PositionAD = 0;

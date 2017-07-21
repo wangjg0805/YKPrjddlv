@@ -216,7 +216,7 @@ enum {
 
 extern uint32   user_id,phmv_division,which_standard,lcd_brightness;      //显示屏对比度的值
 extern uint32   select_ch,switch_flag,match_item,power_fre;
-extern uint32   sound_switch;
+extern uint32   sound_switch,sound_flag;
 
 extern uint32   key_value,Key_Status,electrode_class;
 extern struct   KeyStruct Key[15];

@@ -44,7 +44,7 @@
 
 uint32      user_id,phmv_division,which_standard,lcd_brightness;        //显示屏对比度的值
 uint32      select_ch,switch_flag,match_item,power_fre;
-uint32      sound_switch;
+uint32      sound_switch,sound_flag;
 
 uint32      Key_Status,key_value,electrode_class;  //按键数据以及状态
 struct      KeyStruct  Key[15];

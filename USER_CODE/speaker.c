@@ -180,6 +180,7 @@ void Key_Valid_Sound(void)
 {
  
     if (OFF == sound_switch)    return;       //按键音关
+    sound_flag = 1;
     time_key_sound = 10;    //总共200ms
     key_sound_type = SOUND_TYPE_KEY_VALID;        //设置按键声音类型
 

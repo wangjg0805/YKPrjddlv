@@ -1341,15 +1341,15 @@ void Serv_DDLV_Menu_Disp(void)
 
   Set_Chr_Color(COL_WHITE,COL_BLACK);
   Put_Data(300,115,"%d",range_man);  //power_ch
-  Put_Data_Float(300,115,"%7.1f",ddlv_raw_data1);    //res_ch
-  Put_Data_Float(400,115,"%7.1f",ddlv_raw_data2);    //res_ch
+  Put_Data_Float(350,115,"%7.1f",ddlv_raw_data1);    //res_ch
+  Put_Data_Float(450,115,"%7.1f",ddlv_raw_data2);    //res_ch
   if( sample_flag == 1)
-       Put_Line_Str(Language_Pos(600, 550),  115,Language_Str("OK","OK"));
+       Put_Line_Str(Language_Pos(650, 650),  115,Language_Str("OK","OK"));
   else
-       Put_Line_Str(Language_Pos(600, 550),  115,Language_Str("NO","NO"));      
+       Put_Line_Str(Language_Pos(650, 650),  115,Language_Str("NO","NO"));      
   
   
-  Put_Data(700,115,"%d",point2_cal_step);                //steps
+  Put_Data(720,115,"%d",point2_cal_step);                //steps
   
   if(point2_cal_step > 36) {
       Put_Data_Float(600,50,"%8.1f",res_cal_data[point2_cal_step] / 1000000.0);

@@ -75,7 +75,7 @@ typedef  unsigned  char  BOOLEAN;
 **************************************************************************************************************
 */
 
-#define ACCP_VALUE      20
+#define ACCP_VALUE      30
 #define SAMPLE_TIMES    1
 #define DLYCONST        50
 

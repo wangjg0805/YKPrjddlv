@@ -521,9 +521,10 @@ static uint32  Action_SleepCfg(uint16 x,uint16 y)
 //////////////////////////////////////////////////*/
 static uint32  Action_MainCfg(uint16 x,uint16 y)
 	{
-       uint32 i,Key_Code;
+	   uint32 i,Key_Code;
 	   struct KeyStruct *p;
 	   p = Key;   //point to searcharea
+	 
 	   Key_Code = 0xAA55;
 	   for(i=0;i<8;i++)
 	   {
@@ -534,69 +535,66 @@ static uint32  Action_MainCfg(uint16 x,uint16 y)
 	   }
 	   
 	  //////////////////////////////////////////////////////////有按键按下
-	  if(Key_Status == KEY_PRESS)
-	     {
-	      if (Get_Language_Type() == CHINESE)
-	      { switch(Key_Code)
-	       {
-	        case 1: Put_Bmp(133*0+15,  405,  sysconfig8055,1); break;
-            case 2: Put_Bmp(133*1+15,  405,     recall8055,1); break;
-            case 3: Put_Bmp(133*2+15,  405,        cal8055,1); break;
-            case 4: Put_Bmp(133*3+15,  405,       save8055,1); break;
-            case 5: Put_Bmp(133*4+15,  405,    printer8055,1); break;
-            case 6: Put_Bmp(133*5+15,  405,      sleep8055,1); break; 
-            default:break;
-           } 
-          }
-          else
-          {
-           switch(Key_Code)
-	       {
-	        case 1: Put_Bmp(133*0+15,  405,  sysconfigen8055,1); break;
-            case 2: Put_Bmp(133*1+15,  405,     recallen8055,1); break;
-            case 3: Put_Bmp(133*2+15,  405,        calen8055,1); break;
-            case 4: Put_Bmp(133*3+15,  405,       saveen8055,1); break;
-            case 5: Put_Bmp(133*4+15,  405,    printeren8055,1); break;
-            case 6: Put_Bmp(133*5+15,  405,        sleep8055,1); break; 
-            default:break;
-           } 
+	  if(Key_Status == KEY_PRESS) {
+	      if(Get_Language_Type() == CHINESE) {
+	          switch(Key_Code)
+	          {
+	           case 1: Put_Bmp(133*0+15,  405,  sysconfig8055,1); break;
+               case 2: Put_Bmp(133*1+15,  405,     recall8055,1); break;
+               case 3: Put_Bmp(133*2+15,  405,        cal8055,1); break;
+               case 4: Put_Bmp(133*3+15,  405,       save8055,1); break;
+               case 5: Put_Bmp(133*4+15,  405,    printer8055,1); break;
+               case 6: Put_Bmp(133*5+15,  405,      sleep8055,1); break; 
+               default:break;
+              } 
+          } else {
+              switch(Key_Code)
+	          {
+	           case 1: Put_Bmp(133*0+15,  405,  sysconfigen8055,1); break;
+               case 2: Put_Bmp(133*1+15,  405,     recallen8055,1); break;
+               case 3: Put_Bmp(133*2+15,  405,        calen8055,1); break;
+               case 4: Put_Bmp(133*3+15,  405,       saveen8055,1); break;
+               case 5: Put_Bmp(133*4+15,  405,    printeren8055,1); break;
+               case 6: Put_Bmp(133*5+15,  405,        sleep8055,1); break; 
+               default:break;
+              }  
           }
           Key_Code = 0xAA55;
-	     }
- 	  //增加反白显示 直到按键松开 
-	  if(Key_Status == KEY_DO_START)  
-	    {
-	     Key_Status = KEY_DO_OVER; 
-	     Key_Valid_Sound();
-	     if (Get_Language_Type() == CHINESE)
-	     { switch(Key_Code)
-	      {
-	       case 1: Put_Bmp(133*0+15,  405,  sysconfig8055,0); break;
-           case 2: Put_Bmp(133*1+15,  405,     recall8055,0); break;
-           case 3: Put_Bmp(133*2+15,  405,        cal8055,0); break;
-           case 4: Put_Bmp(133*3+15,  405,       save8055,0); break;
-           case 5: Put_Bmp(133*4+15,  405,    printer8055,0); break;
-           case 6: Put_Bmp(133*5+15,  405,      sleep8055,0); break; 
-           default:break;
-          }
+          
+      } //增加反白显示 直到按键松开 
+	   
+	   if(Key_Status == KEY_DO_START) {
+	    
+	       Key_Status = KEY_DO_OVER; 
+	       Key_Valid_Sound();
+	       if(Get_Language_Type() == CHINESE) {
+	           switch(Key_Code)
+	           {
+	            case 1: Put_Bmp(133*0+15,  405,  sysconfig8055,0); break;
+                case 2: Put_Bmp(133*1+15,  405,     recall8055,0); break;
+                case 3: Put_Bmp(133*2+15,  405,        cal8055,0); break;
+                case 4: Put_Bmp(133*3+15,  405,       save8055,0); break;
+                case 5: Put_Bmp(133*4+15,  405,    printer8055,0); break;
+                case 6: Put_Bmp(133*5+15,  405,      sleep8055,0); break; 
+                default:break;
+               }
+          } else {
+              switch(Key_Code)
+	          {
+	           case 1: Put_Bmp(133*0+15,  405,  sysconfigen8055,0); break;
+               case 2: Put_Bmp(133*1+15,  405,     recallen8055,0); break;
+               case 3: Put_Bmp(133*2+15,  405,        calen8055,0); break;
+               case 4: Put_Bmp(133*3+15,  405,       saveen8055,0); break;
+               case 5: Put_Bmp(133*4+15,  405,    printeren8055,0); break;
+               case 6: Put_Bmp(133*5+15,  405,      sleep8055,0); break; 
+               default:break;
+              }  
          }
-         else
-         {
-         switch(Key_Code)
-	      {
-	       case 1: Put_Bmp(133*0+15,  405,  sysconfigen8055,0); break;
-           case 2: Put_Bmp(133*1+15,  405,     recallen8055,0); break;
-           case 3: Put_Bmp(133*2+15,  405,        calen8055,0); break;
-           case 4: Put_Bmp(133*3+15,  405,       saveen8055,0); break;
-           case 5: Put_Bmp(133*4+15,  405,    printeren8055,0); break;
-           case 6: Put_Bmp(133*5+15,  405,      sleep8055,0); break; 
-           default:break;
-          }  
-         } 
-        }   
-	  /////////////////////////////////////////////// 
-	  return(Key_Code);
-	}
+         return(Key_Code);    
+     }
+     
+     return(Key_Code);   
+}
 
 //////////////////////////////////////////////////////
 //09  强制结束校准状态
@@ -826,7 +824,7 @@ static  sint32 Main_Key_Pro(uint32 key_c,sint32 op)
     // return(op_id);
     //}
     i = Action_MainCfg((key_c>>16)&0xffff,key_c&0xffff); 
-    if(i != 0xaa55)
+    if(i != 0xAA55)
     {
       switch(i)
        {
@@ -874,8 +872,8 @@ static  sint32 Main_Key_Pro(uint32 key_c,sint32 op)
     	    
     	       break;
     	case 8://exit in cal mode
-    	      
-               Return_Normal_Status();
+    	      if(current_mode == STAT_USER_CAL)
+                  Return_Normal_Status();
           
     	       break;     
     	default:break;
@@ -1121,7 +1119,7 @@ void Normal_Operation(void)
      
      };
     sint32 cur_op,next_op;    //当前选项和所切换到的选项(bits[7:0]:选项号;bits[15:8]:界面号;bits[23:16]:选项的显示状态)
-    uint32 cnt=0;
+    uint32 display_cnt,speak_cnt;
     uint16 temp_ad;
     
     cur_op  = 0xffffffff;  
@@ -1131,7 +1129,7 @@ void Normal_Operation(void)
      
     while (1)
      {
-        cnt++;
+        display_cnt++;
         if ((cur_op^next_op)&0x0000ff00)//当前所处的界面和准备切换到的界面不一样
         {//初始化界面
             (*(menu_op[(next_op>>8)&0xff].menu_init))(next_op);
@@ -1151,8 +1149,16 @@ void Normal_Operation(void)
         key_value = Get_PositionXY();        //键盘扫描
         if(key_value)    
             next_op = (*(menu_op[(cur_op>>8)&0xff].op_pro))(key_value,cur_op);     
-        if(cnt&0x01)     
+        
+        if(display_cnt%2 == 0)     
             (*(menu_op[(cur_op>>8)&0xff].disp_pro))();    //显示处理函数
+            
+        if(1 == sound_flag) {
+            sound_flag = 0;
+            Speaker_ON();
+            for(speak_cnt=0;speak_cnt<150000;speak_cnt++) {;}
+            Speaker_OFF();
+        }   
      
         (*(menu_op[(cur_op>>8)&0xff].assi_pro))();    //辅助处理函数
     }
