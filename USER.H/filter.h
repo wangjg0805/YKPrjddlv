@@ -24,6 +24,6 @@ void ma_reset(ma_t *ma);
 float ma_push(ma_t *ma, float v);
 
 void filter_init_lpc2478ad(void);
-float filter_ad_NTC(uint16 ntc_data);
+void filter_ad_NTC(uint16 ntc_data);
 
 #endif

@@ -209,6 +209,8 @@ void InitGlobalVarible(void)
      //elec_cons = 1;
      no_key_time = 0;
      sound_switch = ON;
+     
+     temp_float_ptc = 0;
 	}
  //////////////////////////////////////////////////
  //2

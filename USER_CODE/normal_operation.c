@@ -1143,7 +1143,7 @@ void Normal_Operation(void)
         //read ptc temp
         while(!(ADDR0&0x80000000));
         temp_ad = (ADDR0>>6)&0x3ff;
-        temp_float_ptc = filter_ad_NTC(temp_ad); ///1024.0001 *3300;
+        filter_ad_NTC(temp_ad); ///1024.0001 *3300;
            
         ////////////////////////////////////////////////////////////////           
         key_value = Get_PositionXY();        //º¸≈Ã…®√Ë
