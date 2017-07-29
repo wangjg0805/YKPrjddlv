@@ -1349,7 +1349,10 @@ static void  New_Data_Display2(void)
    default:
        break;
    }        
-       ////////////////////////////然后根据用户校准系数进行修正
+       //elec_cons compensation
+       
+       ddlv_data = ddlv_data * elec_cons;
+       
        temp_comp_proc();
        ////////////////////////////温度补偿完后，然后根据设定的参数显示相应的数据
        if(PARAM_TDS == DDLV_Param)
@@ -1462,7 +1465,9 @@ static void  display_main_area(void)
 
 static void  display_main_area3(void)
 {
-   
+   if(ddlv_data < 0) 
+       return;
+        
    Set_ASC_Lib(GulimChe150_Font);
    Set_Chr_Color(COL_WHITE,COL_BLACK);
   
@@ -1476,6 +1481,7 @@ static void  display_main_area3(void)
            Put_Data_Float(110,125+30, "%5.2f",ddlv_data);     
        break;
    case PARAM_SALTY:
+   
        Put_Data_Float(110,125+30, "%5.1f",ddlv_data);
        break;
    case PARAM_TDS:
@@ -1502,10 +1508,10 @@ static void  display_main_area3(void)
             Put_Line_Str(465, 245+70,Language_Str("mS/cm","mS/cm"));
         break;
     case PARAM_TDS:
-        if(US_CM == DDLV_unit)
-            Put_Line_Str(465, 245+70,Language_Str("mg/L","mg/L")); 
-        else
-            Put_Line_Str(465, 245+70,Language_Str(" g/L"," g/L")); 
+        //if(US_CM == DDLV_unit)
+        //    Put_Line_Str(465, 245+70,Language_Str("mg/L","mg/L")); 
+        //else
+            Put_Line_Str(465, 245+70,Language_Str(" ppm"," ppm")); 
         break;
     case PARAM_SALTY:
          //盐度只有一个单位:  %

@@ -1516,9 +1516,9 @@ void  temp_comp_proc(void)
      tmp = temp_float_ptc;
     ///////////////////////////////////根据温度偏离25标准度的差值和 温度系数 调整 ddlv_data
     if(tmp > 25)      
-     ddlv_data = ddlv_data*(1 + (tmp-25)*temp_cons/100);
+     ddlv_data = ddlv_data*(1 - (tmp-25)*temp_cons/100);
     else
-     ddlv_data = ddlv_data*(1 - (25-tmp)*temp_cons/100);
+     ddlv_data = ddlv_data*(1 + (25-tmp)*temp_cons/100);
     
    }
    
