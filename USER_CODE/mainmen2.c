@@ -189,7 +189,7 @@ void Display_Page_Data(uint32 page_num)
         
         Put_Data(265-15, 135+28*i, "%02d",      (tmp>>6)&0x1f);
         Put_Char(287-15, 135+28*i,':');
-        Put_Data(297-15, 135+28*i, "%02d",       tmp&0x2f);
+        Put_Data(297-15, 135+28*i, "%02d",       tmp&0x3f);
         //Put_Data(285, 135+28*i, "%02d",      BufferData[7]);
         //µÚÈıÁĞPH
         rec_data.rec_uint32 = (BufferData[7]<<24)+(BufferData[8]<<16)+(BufferData[9]<<8)+BufferData[10];

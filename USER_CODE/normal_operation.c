@@ -261,9 +261,14 @@ static  void  Mode_Status_Display2(void)
                   Clr_Bar(5, 90, 800-200-10,200,COL_BLACK);
                   
                   Clr_Bar(310,100, 210, 40,COL_DEEPGRAY);
+                  
+                  if(Get_Language_Type() == CHINESE)
                   Set_ASC_Lib(GulimChe48A_Font);
+                  else
+                  Set_ASC_Lib(Arial16B_Font);
+                  
                   Set_Chr_Color(COL_THINYELLOW,COL_DEEPGRAY); 
-                  Put_Line_Str(320, 110,Language_Str("仪器匹配的数值","THE STANDARD DATA"));
+                  Put_Line_Str(320, 110,Language_Str("仪器匹配的数值","THE MATCH DATA"));
                   
                   /*  不显示使用的是哪种标准
                   Set_Chr_Color(COL_BLACK,COL_THINGRAY);
@@ -296,7 +301,7 @@ static  void  Mode_Status_Display2(void)
   
    case STAT_SYS_CAL:
    case STAT_NORMAL: 
-                  Clr_Bar(5, 90, 800-200-10,200,COL_BLACK);
+                  Clr_Bar(5, 90, 800-200-10+5,200,COL_BLACK);
                   //显示测量模式 
                   Clr_Bar(470, 90, 115,30,COL_WHITE);
                   Set_Chr_Color(COL_DEEPBLUE,COL_WHITE);
@@ -1661,9 +1666,9 @@ static void  display_user_caling_data(void)
      }
    
    if(TRUE == version_811)    
-     Put_Data_Float(295,165, "%6.3f",standard_data_p811[which_standard][match_point]);
+     Put_Data_Float(270,165, "%6.3f",standard_data_p811[which_standard][match_point]);
    else
-     Put_Data_Float(295,165, "%6.2f",standard_data_p801[which_standard][match_point]);
+     Put_Data_Float(270,165, "%6.2f",standard_data_p801[which_standard][match_point]);
  
   //display mv 
   Set_Chr_Color(COL_BLACK,COL_THINGRAY);
@@ -1754,7 +1759,7 @@ static void  display_user_caling_data2(void)
       Set_Chr_Color(COL_DEEPGRAY,COL_DEEPGRAY); 
      }
      
-   Put_Data_Float(295,165, "%6.3f",DDLV_standard_data[which_standard][match_point]);
+   Put_Data_Float(270,165, "%6.3f",DDLV_standard_data[which_standard][match_point]);
   
   /*/display mv 
   Set_Chr_Color(COL_BLACK,COL_THINGRAY);
