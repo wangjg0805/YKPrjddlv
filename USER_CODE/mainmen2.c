@@ -193,7 +193,7 @@ void Display_Page_Data(uint32 page_num)
         //Put_Data(285, 135+28*i, "%02d",      BufferData[7]);
         //第三列PH
         rec_data.rec_uint32 = (BufferData[7]<<24)+(BufferData[8]<<16)+(BufferData[9]<<8)+BufferData[10];
-        Put_Data_Float(340, 135+28*i, "%6.3f",rec_data.rec_float);
+        Put_Data_Float(350, 135+28*i, "%6.2f",rec_data.rec_float);
         //第四列MV
         rec_data.rec_uint32 = (BufferData[11]<<24)+(BufferData[12]<<16)+(BufferData[13]<<8)+BufferData[14];
         Put_Data_Float(440, 135+28*i, "%7.2f",rec_data.rec_float);

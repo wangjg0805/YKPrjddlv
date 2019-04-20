@@ -609,7 +609,18 @@ void  Return_Normal_Status(void)
     {
      point2_cal_start = FALSE;
      current_mode     = STAT_NORMAL;
+     // update display
+     
+    Set_Chr_Color(COL_THINYELLOW,COL_BLACK);
+    Set_ASC_Lib(ARIALN26B);
+    Clr_Bar(640,155,120,50,COL_BLACK);
+    Clr_Bar(640,300,120,50,COL_BLACK);
+    
+    Put_Data_Float(660,170,"%6.3f",elec_cons);
+    Put_Data_Float(660,315,"%6.3f",TDS_cons);
+    
     }
+    
     
 void  Clear_User_Cal(void)
   {
@@ -874,6 +885,8 @@ static  sint32 Main_Key_Pro(uint32 key_c,sint32 op)
     	       if((TRUE==match_flag)&&(current_mode == STAT_USER_CAL)&&((TRUE == stable_flag)))  //匹配到溶液并且稳定后 save才起作用
     	    
     	       Save_UserCal_Pro();
+    	       
+    	       Return_Normal_Status();
     	    
     	       break;
     	case 8://exit in cal mode
@@ -1320,6 +1333,29 @@ static void Negative_Status_Display(void)
 //
 //////////////////////////////////////////////////////////
 
+float GetNewElec_cons(void)
+{
+	float tmp;
+	
+	if(STAT_USER_CAL == current_mode) {
+		if((elec_cons > 0.007)&&(elec_cons < 0.013))
+			tmp = 0.01;
+		else if((elec_cons > 0.07)&&(elec_cons < 0.13))
+			tmp = 0.1;
+     	else if((elec_cons > 0.7)&&(elec_cons < 1.3))
+			tmp = 1.0;
+		else if((elec_cons > 7)&&(elec_cons < 13))
+			tmp = 10;
+		else
+		    tmp = elec_cons;	
+	} else {
+		tmp = elec_cons;
+	}
+		
+	return(tmp);
+}
+
+
 static void  New_Data_Display2(void)
  {
 
@@ -1355,8 +1391,7 @@ static void  New_Data_Display2(void)
        break;
    }        
        //elec_cons compensation
-       
-       ddlv_data = ddlv_data * elec_cons;
+       ddlv_data = ddlv_data * GetNewElec_cons();
        
        temp_comp_proc();
        ////////////////////////////温度补偿完后，然后根据设定的参数显示相应的数据
@@ -1700,6 +1735,7 @@ static void  display_user_caling_data(void)
      
     Put_Char(20,320,'-');     
 }  
+
 //////////////////////////////////////////////////////
 //28  DDLV 校准状态下的 显示xxxxxxxxxxxxxxxxxxxxxxxxxx
 //
@@ -1738,7 +1774,7 @@ static void  display_user_caling_data2(void)
     else
         tmp = DDLV_standard_data[which_standard][i] - ddlv_data;
         
-    if(tmp < 0.5)
+    if(tmp <  DDLV_standard_data[which_standard][i] / 2)
      {
       match_flag  = TRUE;
       break; 

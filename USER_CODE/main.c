@@ -105,7 +105,7 @@ sint32 main(void)
     Init_Lpc2478ADC();
     ///////////////////////////
     
-     ADS1100Pin_Init();
+    ADS1100Pin_Init();
   
     //使用默认配置 适用于高区测量
     match_item = MATCH_ITEM_6;
